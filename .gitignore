@@ -2,4 +2,6 @@
 env/
 .vscode/
 venv/
+files/
+index.html
 

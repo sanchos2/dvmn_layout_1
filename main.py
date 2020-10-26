@@ -1,4 +1,3 @@
-"""Main file."""
 import os
 from collections import defaultdict
 from datetime import datetime
@@ -8,20 +7,20 @@ import pandas
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
-def excel_to_dict(excel_file, item_to_sort):
+def xlsx_to_dict_converter(xlsx_file, key_to_sort):
     """
-    Excel to dictionary function.
+    Convert xslx file to dictionary.
 
-    :param excel_file: Excel file.
-    :param item_to_sort: Key to sorting.
+    :param xlsx_file: xlsx file.
+    :param key_to_sort: Key to sorting.
     :return: prepared dict.
     """
-    excel_data_df = pandas.read_excel(excel_file, na_values=['nan'], keep_default_na=False)
-    raw_wine_dict = excel_data_df.to_dict(orient='records')
-    excel_dict = defaultdict(list)
-    for wine in raw_wine_dict:
-        excel_dict[wine[item_to_sort]].append(wine)
-    return excel_dict
+    excel_data_df = pandas.read_excel(xlsx_file, na_values=['nan'], keep_default_na=False)
+    raw_dict = excel_data_df.to_dict(orient='records')
+    sorted_dict = defaultdict(list)
+    for record in raw_dict:
+        sorted_dict[record[key_to_sort]].append(record)
+    return sorted_dict
 
 
 winery_creation_year = 1920
@@ -36,7 +35,7 @@ date_now = datetime.now()
 age_winery = date_now.year - winery_start.year
 
 path_to_excel = os.path.join('files', 'wine3.xlsx')
-wine_dict = excel_to_dict(path_to_excel, 'Категория')
+product_dict = xlsx_to_dict_converter(path_to_excel, 'Категория')
 
 env = Environment(
     loader=FileSystemLoader('.'),
@@ -46,7 +45,7 @@ env = Environment(
 template = env.get_template('template.html')
 rendered_page = template.render(
     age_winery=age_winery,
-    wine_dict=wine_dict,
+    product_dict=product_dict,
 )
 
 with open('index.html', 'w', encoding='utf8') as main_html_file:
