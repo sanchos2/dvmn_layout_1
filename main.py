@@ -1,10 +1,26 @@
-import os
+import argparse
 from collections import defaultdict
 from datetime import datetime
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 import pandas
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+
+
+def create_parser():
+    """
+    Parse command line option.
+
+    :return: parser object
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-f',
+        '--file',
+        help='Path to file with products. Format - xlsx.',
+        type=str,
+    )
+    return parser
 
 
 def xlsx_to_dict_converter(xlsx_file, key_to_sort):
@@ -34,8 +50,10 @@ winery_start = datetime(
 date_now = datetime.now()
 winery_age = date_now.year - winery_start.year
 
-path_to_excel = os.path.join('files', 'wine3.xlsx')
-product_dict = xlsx_to_dict_converter(path_to_excel, 'Категория')
+parser = create_parser()
+namespace = parser.parse_args()
+path_to_xlsx = namespace.file
+product_dict = xlsx_to_dict_converter(path_to_xlsx, 'Категория')
 
 env = Environment(
     loader=FileSystemLoader('.'),
