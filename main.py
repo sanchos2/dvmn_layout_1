@@ -32,7 +32,7 @@ winery_start = datetime(
     day=winery_creation_day,
 )
 date_now = datetime.now()
-age_winery = date_now.year - winery_start.year
+winery_age = date_now.year - winery_start.year
 
 path_to_excel = os.path.join('files', 'wine3.xlsx')
 product_dict = xlsx_to_dict_converter(path_to_excel, 'Категория')
@@ -44,7 +44,7 @@ env = Environment(
 
 template = env.get_template('template.html')
 rendered_page = template.render(
-    age_winery=age_winery,
+    winery_age=winery_age,
     product_dict=product_dict,
 )
 
