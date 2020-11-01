@@ -33,17 +33,15 @@ def convert_product_table(xlsx_file, key_to_sort):
     :return: prepared dict.
     """
     product_table = pandas.read_excel(xlsx_file, na_values=['nan'], keep_default_na=False)
-    raw_product = product_table.to_dict(orient='records')
-    sorted_product = defaultdict(list)
-    for record in raw_product:
-        sorted_product[record[key_to_sort]].append(record)
-    return sorted_product
+    raw_products = product_table.to_dict(orient='records')
+    sorted_products = defaultdict(list)
+    for record in raw_products:
+        sorted_products[record[key_to_sort]].append(record)
+    return sorted_products
 
 
 winery_creation_year = 1920
-winery_start = datetime.strptime(str(winery_creation_year), '%Y')
-date_now = datetime.now()
-winery_age = date_now.year - winery_start.year
+winery_age = datetime.now().year - winery_creation_year
 
 parser = create_parser()
 namespace = parser.parse_args()
