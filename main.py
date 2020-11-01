@@ -46,7 +46,7 @@ winery_age = datetime.now().year - winery_creation_year
 parser = create_parser()
 namespace = parser.parse_args()
 path_to_file = namespace.file
-product_dict = convert_product_table(path_to_file, 'Категория')
+products = convert_product_table(path_to_file, 'Категория')
 
 env = Environment(
     loader=FileSystemLoader('.'),
@@ -56,7 +56,7 @@ env = Environment(
 template = env.get_template('template.html')
 rendered_page = template.render(
     winery_age=winery_age,
-    product_dict=product_dict,
+    products=products,
 )
 
 with open('index.html', 'w', encoding='utf8') as main_html_file:
