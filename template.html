@@ -60,7 +60,7 @@
           <div class="mx-auto">
             <nav class="site-navigation position-relative text-left">
               <ul class="site-menu main-menu js-clone-nav mx-auto d-none pl-0 d-md-block border-none">
-                <li class="active"><a href="template.html" class="nav-link text-left">Главная</a></li>
+                <li class="active"><a href="index.html" class="nav-link text-left">Главная</a></li>
                 <li><a href="#products" class="nav-link text-left">Коллекция вин</a></li>
                 <li><a href="#feedback" class="nav-link text-left">Отзывы</a></li>
                 <li><a href="#footer" class="nav-link text-left">Контакты</a></li>
@@ -108,25 +108,25 @@
         </div>
       </div>
       {% for category, products in product_dict.items() %}
-      <div class="row">
-        <div class="col-12 section-title text-center mb-5">
-          <h2 class="d-block">{{ category }}</h2>
+        <div class="row">
+          <div class="col-12 section-title text-center mb-5">
+            <h2 class="d-block">{{ category }}</h2>
+          </div>
         </div>
-      </div>
         <div class="row">
           {% for item in products %}
             <div class="col-lg-4 mb-5 col-md-6">
               <div class="wine_v_1 text-center pb-4 pt-5">
                 <img src="images/{{ item.Картинка }}" alt="Image" class="img-fluid">
                 {% if item.Акция %}
-                <img src="assets/profitable.png"
+                  <img src="assets/profitable.png"
                      style="width:10rem;height: 10rem;position:absolute;right: -20px;top: -20px;">
                 {% endif %}
                 <div>
                   <h3 class="heading mt-3 mb-3 text-dark">{{ item.Название }}</h3>
                   <p>
                     {% if item.Сорт %}
-                    Сорт винограда - {{ item.Сорт }}<br/>
+                      Сорт винограда - {{ item.Сорт }}<br/>
                     {% endif %}
                     <span class="price">{{ item.Цена }} р.</span>
                   </p>

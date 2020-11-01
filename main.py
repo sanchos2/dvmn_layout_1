@@ -19,11 +19,12 @@ def create_parser():
         '--file',
         help='Path to file with products. Format - xlsx.',
         type=str,
+        required=True,
     )
     return parser
 
 
-def xlsx_to_dict_converter(xlsx_file, key_to_sort):
+def convert_product_table(xlsx_file, key_to_sort):
     """
     Convert xslx file to dictionary.
 
@@ -31,29 +32,23 @@ def xlsx_to_dict_converter(xlsx_file, key_to_sort):
     :param key_to_sort: Key to sorting.
     :return: prepared dict.
     """
-    excel_data_df = pandas.read_excel(xlsx_file, na_values=['nan'], keep_default_na=False)
-    raw_dict = excel_data_df.to_dict(orient='records')
-    sorted_dict = defaultdict(list)
-    for record in raw_dict:
-        sorted_dict[record[key_to_sort]].append(record)
-    return sorted_dict
+    product_table = pandas.read_excel(xlsx_file, na_values=['nan'], keep_default_na=False)
+    raw_product = product_table.to_dict(orient='records')
+    sorted_product = defaultdict(list)
+    for record in raw_product:
+        sorted_product[record[key_to_sort]].append(record)
+    return sorted_product
 
 
 winery_creation_year = 1920
-winery_creation_month = 1
-winery_creation_day = 1
-winery_start = datetime(
-    year=winery_creation_year,
-    month=winery_creation_month,
-    day=winery_creation_day,
-)
+winery_start = datetime.strptime(str(winery_creation_year), '%Y')
 date_now = datetime.now()
 winery_age = date_now.year - winery_start.year
 
 parser = create_parser()
 namespace = parser.parse_args()
-path_to_xlsx = namespace.file
-product_dict = xlsx_to_dict_converter(path_to_xlsx, 'Категория')
+path_to_file = namespace.file
+product_dict = convert_product_table(path_to_file, 'Категория')
 
 env = Environment(
     loader=FileSystemLoader('.'),
